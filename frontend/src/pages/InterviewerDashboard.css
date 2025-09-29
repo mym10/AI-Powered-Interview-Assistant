@@ -1,0 +1,129 @@
+/* Dashboard container */
+.dashboard {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Controls (search + sort) */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.controls input[type="text"] {
+  width: 60%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.controls input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.controls select {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Candidate list layout */
+.candidate-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Candidate card */
+.candidate-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 18px 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.candidate-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.candidate-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #333;
+}
+
+.candidate-card p {
+  margin: 4px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Candidate detail */
+.candidate-detail {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.candidate-detail button {
+  padding: 8px 14px;
+  margin-bottom: 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.candidate-detail button:hover {
+  background-color: #0056b3;
+}
+
+.candidate-detail h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.candidate-detail p {
+  font-size: 16px;
+  color: #555;
+  margin: 8px 0;
+}
+
+.candidate-detail ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.candidate-detail li {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.candidate-detail li strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.candidate-detail li em {
+  color: #666;
+  font-style: normal;
+  display: block;
+  margin: 2px 0;
+}

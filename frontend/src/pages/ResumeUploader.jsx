@@ -38,6 +38,7 @@ export default function ResumeUploader() {
       });
 
       setResumeData({
+        sessionId: res.data.sessionId,
         name: res.data.name || "",
         email: res.data.email || "",
         phone: res.data.phone || "",

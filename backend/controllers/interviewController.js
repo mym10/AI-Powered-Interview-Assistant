@@ -104,16 +104,22 @@ export const generateSummary = async (req, res) => {
       return res.status(404).json({ error: "No answers found for this session" });
     }
 
+    // 👉 Call AI to generate summary
     const { summary, totalScore } = await generateAiSummary(prevQA);
+
+    // ✅ Save into the candidate session so interviewer dashboard can read it
+    global.sessions[sessionId].finalScore = totalScore;
+    global.sessions[sessionId].summary = summary;
 
     res.json({
       score: totalScore,
       summary,
-      answers: prevQA, // optional: useful for debugging
+      answers: prevQA, // still send answers if frontend needs details
     });
   } catch (err) {
     console.error("❌ Error generating summary:", err);
     res.status(500).json({ error: "Failed to generate summary" });
   }
 };
+
 

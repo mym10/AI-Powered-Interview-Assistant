@@ -115,7 +115,7 @@ body {
   cursor: pointer;
   border-radius: 20px;
   /* Gradient background */
-  background: linear-gradient(45deg, #04558F, #0E2847, #04558F);
+  background-image: linear-gradient(45deg, #9DC4E0 , #388CF2 50%, #9DC4E0 100%);
   color: white;
   
   transition: transform 0.2s ease, box-shadow 0.2s ease;

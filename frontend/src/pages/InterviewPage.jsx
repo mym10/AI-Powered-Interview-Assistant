@@ -7,7 +7,7 @@ function InterviewPage() {
   const location = useLocation();
   const { resumeData } = location.state || {};
 
-  const [sessionId] = useState(() => Date.now().toString());
+  const sessionId = resumeData?.sessionId;
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [currentDifficulty, setCurrentDifficulty] = useState("Easy");
