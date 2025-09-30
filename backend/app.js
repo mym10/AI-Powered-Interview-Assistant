@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import resumeRoutes from "./routes/resume.js";
 import interviewRoutes from "./routes/interview.js";
 import candidateRoutes from "./routes/candidate.js";
+import registerRouter from "./routes/register.js";
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/resume", resumeRoutes);
+app.use("/register", registerRouter);
 app.use("/interview", interviewRoutes);
 app.use("/candidates", candidateRoutes);
 

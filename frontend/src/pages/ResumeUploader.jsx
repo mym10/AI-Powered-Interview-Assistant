@@ -49,14 +49,47 @@ export default function ResumeUploader() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!resumeData.name || !resumeData.email || !resumeData.phone) {
       setError("Please fill all fields before starting the interview.");
       return;
     }
- 
-    navigate("/interview", { state: { resumeData } });
+
+    try {
+      let sessionId = localStorage.getItem("currentSessionId");
+
+      if (!sessionId) {
+        // No existing session → register
+        const res = await axios.post("http://localhost:5000/register", {
+          name: resumeData.name,
+          email: resumeData.email,
+          phone: resumeData.phone,
+        });
+
+        sessionId = res.data.sessionId;
+      }
+
+      // ✅ Save session ID in localStorage (for resume feature)
+      localStorage.setItem("currentSessionId", sessionId);
+
+      // ✅ Pass sessionId + name to InterviewPage
+      navigate("/interview", {
+        state: {
+          resumeData: {
+            ...resumeData,
+            sessionId,
+            name: resumeData.name,
+            fromResumeUploader: true,
+          },
+        },
+      });
+    } catch (err) {
+      console.error("❌ Error registering candidate:", err);
+      setError("Failed to start interview. Please try again.");
+    }
   };
+
+
 
   return (
     <div className="card">

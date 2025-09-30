@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./InterviewerDashboard.css"
+import "./InterviewerDashboard.css";
 
 // --- Candidate List ---
 const CandidateList = ({ candidates, onSelect, search, sort }) => {
-  // filter + sort
   const filtered = candidates
-    .filter(c =>
-      c.name.toLowerCase().includes(search.toLowerCase())
-    )
+    .filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
-      if (sort === "score") return b.score - a.score;
+      if (sort === "score") return (b.score || 0) - (a.score || 0);
       if (sort === "name") return a.name.localeCompare(b.name);
       return 0;
     });
@@ -23,9 +20,9 @@ const CandidateList = ({ candidates, onSelect, search, sort }) => {
           className="candidate-card"
           onClick={() => onSelect(c.sessionId)}
         >
-          <h3>{c.name}</h3>
+          <h3>{c.name || `Candidate ${c.sessionId}`}</h3>
           <p>Score: {c.score ?? "—"}</p>
-          <p>{c.summary?.slice(0, 80)}...</p>
+          <p>{c.summary?.slice(0, 80) || "No summary yet"}...</p>
         </div>
       ))}
     </div>
@@ -36,20 +33,24 @@ const CandidateList = ({ candidates, onSelect, search, sort }) => {
 const CandidateDetail = ({ candidate, onBack }) => (
   <div className="candidate-detail">
     <button onClick={onBack}>← Back</button>
-    <h2>{candidate.name}</h2>
-    <p><strong>Final Score:</strong> {candidate.score}</p>
-    <p><strong>Summary:</strong> {candidate.summary}</p>
+    <h2>{candidate.name || `Candidate ${candidate.sessionId}`}</h2>
+    <p><strong>Final Score:</strong> {candidate.score ?? "—"}</p>
+    <p><strong>Summary:</strong> {candidate.summary || "No summary yet"}</p>
 
     <h3>Answers</h3>
-    <ul>
-      {candidate.answers.map((qa, i) => (
-        <li key={i}>
-          <strong>Q{i + 1} ({qa.difficulty}):</strong> {qa.question}<br />
-          <em>Answer:</em> {qa.answer}<br />
-          <em>Score:</em> {qa.score}/20
-        </li>
-      ))}
-    </ul>
+    {candidate.answers?.length > 0 ? (
+      <ul>
+        {candidate.answers.map((qa, i) => (
+          <li key={i}>
+            <strong>Q{i + 1} ({qa.difficulty}):</strong> {qa.question}<br />
+            <em>Answer:</em> {qa.answer || "(Not answered)"}<br />
+            <em>Score:</em> {qa.score != null ? qa.score : "—"}/20
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No answers yet.</p>
+    )}
   </div>
 );
 
@@ -60,11 +61,17 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("score");
 
+  const fetchCandidates = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/candidates");
+      setCandidates(res.data);
+    } catch (err) {
+      console.error("❌ Fetch failed:", err);
+    }
+  };
+
   useEffect(() => {
-    // fetch from backend
-    axios.get("http://localhost:5000/candidates")
-      .then(res => setCandidates(res.data))
-      .catch(err => console.error("❌ Fetch failed:", err));
+    fetchCandidates();
   }, []);
 
   const candidate = candidates.find(c => c.sessionId === selected);
@@ -84,6 +91,7 @@ const Dashboard = () => {
               <option value="score">Sort by Score</option>
               <option value="name">Sort by Name</option>
             </select>
+            <button onClick={fetchCandidates}>Refresh</button>
           </div>
 
           <CandidateList
