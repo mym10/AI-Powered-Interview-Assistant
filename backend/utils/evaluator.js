@@ -48,24 +48,24 @@ export const generateAiSummary = async (answers) => {
   const totalScore = answers.reduce((sum, a) => sum + (a.score || 0), 0);
 
   const prompt = `
-You are an interview summarizer.
-Here are the candidate's answers with scores:
+  You are an interview summarizer.
+  Here are the candidate's answers with scores:
 
-${answers
-  .map(
-    (a, i) =>
-      `Q${i + 1} (${a.difficulty}): ${a.question}\nAnswer: ${a.answer}\nScore: ${a.score}/20\n`
-  )
-  .join("\n")}
+  ${answers
+    .map(
+      (a, i) =>
+        `Q${i + 1} (${a.difficulty}): ${a.question}\nAnswer: ${a.answer}\nScore: ${a.score}/20\n`
+    )
+    .join("\n")}
 
-Provide:
-1. A short professional summary of the candidate's performance.
-2. Strengths and weaknesses.
-3. Final recommendation.
+  Provide:
+  1. A short professional summary of the candidate's performance.
+  2. Strengths and weaknesses.
+  3. Final recommendation.
 
-Keep it concise, 4-6 sentences.
+  Keep it concise, 4-6 sentences. Do not use bold style for words. 
+  Neatly format the responce. only give the responce.
 `;
-
   try {
     const response = await client.chat.complete({
       model: "mistral-small-latest",

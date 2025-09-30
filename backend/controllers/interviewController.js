@@ -42,7 +42,10 @@ export const generateQuestion = async (req, res) => {
       Generate ONE new ${difficulty} interview question.
       Do NOT repeat these: ${prevQA.map(q => `"${q.question}"`).join(", ") || "None"}.
       Only concise verbal questions, max 3-4 sentences.
+      Do not ask followup questions. Do not write any words in bold. Simply return the question.
+      Do not ask questions on codeing or designing or implementing.
     `;
+
 
     const chatResponse = await client.chat.complete({
       model: "mistral-small-latest",
